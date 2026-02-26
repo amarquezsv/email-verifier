@@ -1,3 +1,6 @@
+# GitHub
+https://github.com/amarquezsv/email-verifier
+
 # Prerequisites
 
 Before building or running this project with `./gradlew`, Windows 11 users must configure the **JAVA_HOME** environment variable to point to a valid JDK installation.
