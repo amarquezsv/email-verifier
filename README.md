@@ -98,10 +98,26 @@ Look for the marker:
 // TODO - ## Consistent hash exchange [AM 2.26.2026]
 ```
 
-For the Final Test check the Terminal_8_FINAL in the TEST_screenshots/ folder 
+For the Final Test check the Terminal_8_FINAL in the TEST_screenshots/ folder
+
+1.
 ```powershell
 $env:JAVA_HOME = "C:\Program Files\Java\jdk-21.0.10"
 ./gradlew clean test
+```
+
+2.
+```kotlin
+val registrationRequestExchange = RabbitExchange(
+    name = "registration-request-exchange-ch",
+    type = "x-consistent-hash",
+    routingKeyGenerator = { email: String -> email }
+)
+```
+
+3.
+```kotlin
+routingKeyGenerator = { email: String -> email }
 ```
 
 
