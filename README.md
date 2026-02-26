@@ -1,3 +1,24 @@
+# Prerequisites
+
+Before building or running this project with `./gradlew`, Windows 11 users must configure the **JAVA_HOME** environment variable to point to a valid JDK installation.  
+If this variable is missing or incorrect, Gradle will fail to start.
+
+## Set JAVA_HOME on Windows 11
+
+If you already have a JDK installed (for example, JDK 21), you can set the variable temporarily in PowerShell:
+
+```powershell
+$env:JAVA_HOME = "C:\Program Files\Java\jdk-21.0.10"
+```
+## To set it permanently:
+- Open Edit the system environment variables.
+- Select Environment Variables….
+- Under System variables, click New… or Edit….
+- Name: JAVA_HOME
+- Value: the full path to your JDK installation (e.g., C:\Program Files\Java\jdk-21.0.10).
+- Save and restart your terminal.
+
+
 # Email Verifier
 
 An app for verifying email addresses in a registration flow, which is
