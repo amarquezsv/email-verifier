@@ -99,6 +99,12 @@ Look for the marker:
 ```
 
 
+```powershell
+$env:JAVA_HOME = "C:\Program Files\Java\jdk-21.0.10"
+./gradlew clean test
+```
+
+
 # Email Verifier
 
 An app for verifying email addresses in a registration flow, which is
