@@ -1,6 +1,6 @@
 # Prerequisites
 
-Before building or running this project with `./gradlew`, Windows 11 users must configure the **JAVA_HOME** environment variable to point to a valid JDK installation.  
+Before building or running this project with `./gradlew`, Windows 11 users must configure the **JAVA_HOME** environment variable to point to a valid JDK installation.
 If this variable is missing or incorrect, Gradle will fail to start.
 
 ## Set JAVA_HOME on Windows 11
@@ -17,6 +17,71 @@ $env:JAVA_HOME = "C:\Program Files\Java\jdk-21.0.10"
 - Name: JAVA_HOME
 - Value: the full path to your JDK installation (e.g., C:\Program Files\Java\jdk-21.0.10).
 - Save and restart your terminal.
+
+
+# Required Terminals (T1–T7) for Running the Project on Windows 11
+The project requires 7 terminals to be opened simultaneously.
+Because this setup runs on Windows 11, each Gradle command must explicitly set the Java version before execution.
+
+All screenshots of these steps are available in the repository under the folder:
+TEST_screenshots/
+
+## T1 — Docker Services
+
+```powershell
+docker-compose up
+```
+
+## T2 — Database Migrations
+
+```powershell
+$env:JAVA_HOME = "C:\Program Files\Java\jdk-21.0.10"
+$env:PATH = "$env:JAVA_HOME\bin;" + ($env:PATH -replace '[^;]*[Jj]ava[^;]*;', '')
+./gradlew devMigrate testMigrate
+```
+
+## T3 — Notification Serve
+
+```powershell
+$env:JAVA_HOME = "C:\Program Files\Java\jdk-21.0.10"
+$env:PATH = "$env:JAVA_HOME\bin;" + ($env:PATH -replace '[^;]*[Jj]ava[^;]*;', '')
+./gradlew applications:notification-server:run
+```
+
+## T4 — Registration Server
+
+```powershell
+$env:JAVA_HOME = "C:\Program Files\Java\jdk-21.0.10"
+$env:PATH = "$env:JAVA_HOME\bin;" + ($env:PATH -replace '[^;]*[Jj]ava[^;]*;', '')
+./gradlew applications:registration-server:run
+```
+
+## T5 — Fake SendGrid
+
+```powershell
+$env:JAVA_HOME = "C:\Program Files\Java\jdk-21.0.10"
+$env:PATH = "$env:JAVA_HOME\bin;" + ($env:PATH -replace '[^;]*[Jj]ava[^;]*;', '')
+./gradlew platform-support:fake-sendgrid:run
+```
+
+## T6 — Benchmark (requires stopping T5 first
+
+```powershell
+$env:JAVA_HOME = "C:\Program Files\Java\jdk-21.0.10"
+$env:PATH = "$env:JAVA_HOME\bin;" + ($env:PATH -replace '[^;]*[Jj]ava[^;]*;', '')
+./gradlew applications:benchmark:run
+./gradlew applications:benchmark:run --stacktrace
+```
+
+## T7 — Benchmark + K6 (requires stopping T5 first)
+
+
+```powershell
+$env:JAVA_HOME = "C:\Program Files\Java\jdk-21.0.10"
+./gradlew applications:benchmark:run > benchmark_results.txt
+k6 run test.js > test_result_k6.txt
+```
+
 
 
 # Email Verifier
@@ -38,7 +103,7 @@ designed to handle very high throughput.
     ```
 
 ## Build and run
-    
+
 1.  Use the [Gradle Kotlin plugin](https://kotlinlang.org/docs/gradle.html#compiler-options)
     to run tests, build, and fetch dependencies.
     For example, to build run
@@ -50,7 +115,7 @@ designed to handle very high throughput.
     ```shell
     ./gradlew applications:notification-server:run
     ```
-    
+
     Luckily, Gradle fuzzy-matches task names, so the command can optionally be shortened to
 
     ```shell
@@ -61,7 +126,7 @@ designed to handle very high throughput.
     ```shell
     ./gradlew applications:registration-server:run
     ```
-    
+
 1.  Run the fake Sendgrid server in another separate terminal window.
     ```shell
     ./gradlew platform-support:fake-sendgrid:run
@@ -82,7 +147,7 @@ designed to handle very high throughput.
     ```text
     Content-Type: application/json
     ```
-    
+
 1.  Check the logs of the fake Sendgrid server for your confirmation code.
     Once you receive it, post to [http://localhost:8081/register](http://localhost:8081/register)
     to confirm your registration.
@@ -115,7 +180,7 @@ The _benchmark app_ runs a simple benchmark test against the running apps.
 
 1.  Once the benchmark is finished, try running it again giving different values for the `REGISTRATION_COUNT`,
     `REGISTRATION_WORKER_COUNT`, and `REQUEST_WORKER_COUNT` environment variables.
-    
+
 1.  After getting comfortable with the environment, try running multiple instances of the notification server and the
     registration server.
     Make sure to provide a unique `PORT` environment variable to each instance of the registration server.

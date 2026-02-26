@@ -51,19 +51,30 @@ fun main(): Unit = runBlocking {
     )
     val registrationNotificationQueue = RabbitQueue("registration-notification")
     connectionFactory.declareAndBind(exchange = registrationNotificationExchange, queue = registrationNotificationQueue, routingKey = "42")
+    // AM(amarquezsv) Final Exam
+    // https://github.com/amarquezsv/email-verifier
+    
+    // TODO - rename the request exchange (since you've already declared a direct exchange under the current name)
+    // TODO - use a consistent hash exchange (x-consistent-hash)
+    // TODO - calculate a routing key based on message content
 
     val registrationRequestExchange = RabbitExchange(
-        // TODO - rename the request exchange (since you've already declared a direct exchange under the current name)
-        name = "registration-request-exchange",
-        // TODO - use a consistent hash exchange (x-consistent-hash)
-        type = "direct",
-        // TODO - calculate a routing key based on message content
-        routingKeyGenerator = @Suppress("UNUSED_ANONYMOUS_PARAMETER") { message: String -> "42" },
+        name = "registration-request-exchange-ch",
+        type = "x-consistent-hash",
+        routingKeyGenerator = { email: String -> email }
     )
+
     // TODO - read the queue name from the environment
-    val registrationRequestQueue = RabbitQueue("registration-request")
+    val registrationRequestQueueName = System.getenv("REGISTRATION_REQUEST_QUEUE") ?: "registration-request-${System.getenv("PORT") ?: "8081"}"
+    val registrationRequestQueue = RabbitQueue(registrationRequestQueueName)
+    val registrationRequestBindingWeight = System.getenv("REGISTRATION_REQUEST_BINDING") ?: "1"
     // TODO - read the routing key from the environment
-    connectionFactory.declareAndBind(exchange = registrationRequestExchange, queue = registrationRequestQueue, routingKey = "42")
+    // AM 2.26.2026
+    connectionFactory.declareAndBind(
+        exchange = registrationRequestExchange,
+        queue = registrationRequestQueue,
+        routingKey = registrationRequestBindingWeight
+    )
 
     listenForRegistrationRequests(
         connectionFactory,
