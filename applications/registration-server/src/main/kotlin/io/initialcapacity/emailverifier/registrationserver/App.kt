@@ -53,7 +53,8 @@ fun main(): Unit = runBlocking {
     connectionFactory.declareAndBind(exchange = registrationNotificationExchange, queue = registrationNotificationQueue, routingKey = "42")
     // AM(amarquezsv) Final Exam
     // https://github.com/amarquezsv/email-verifier
-    
+    // TODO - ## Consistent hash exchange [AM 2.26.2026]
+
     // TODO - rename the request exchange (since you've already declared a direct exchange under the current name)
     // TODO - use a consistent hash exchange (x-consistent-hash)
     // TODO - calculate a routing key based on message content

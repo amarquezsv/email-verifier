@@ -86,6 +86,18 @@ k6 run test.js > test_result_k6.txt
 ```
 
 
+## Solution to Consistent Hash Exchange
+
+To review the implementation, check the following file and search for the `// TODO` comment:
+
+`applications/registration-server/src/main/kotlin/io/initialcapacity/emailverifier/registrationserver/App.kt`
+
+Look for the marker:
+
+```kotlin
+// TODO - ## Consistent hash exchange [AM 2.26.2026]
+```
+
 
 # Email Verifier
 
@@ -193,3 +205,5 @@ The _benchmark app_ runs a simple benchmark test against the running apps.
 Now that we have our system working with multiple instances, we will implement a [consistent hash exchange](https://github.com/rabbitmq/rabbitmq-server/tree/master/deps/rabbitmq_consistent_hash_exchange)
 to better distribute load between our registration request consumers.
 Look for the `TODO`s in the codebase to help you get started.
+
+
